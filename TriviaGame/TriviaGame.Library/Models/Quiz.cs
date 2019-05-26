@@ -27,5 +27,7 @@ namespace TriviaGame.Library.Models
         public List<Question> Questions { get; set; } = new List<Question>();
         public Category Category { get; set; }
         public GameMode GameMode { get; set; }        
+        public List<Category> Categories { get; set; }
+        public List<GameMode> GameModes { get; set; }
     }
 }

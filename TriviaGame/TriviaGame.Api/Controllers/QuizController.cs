@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TriviaGame.DataAccess.Repositories;
 using TriviaGame.Library.Interfaces;
 using TriviaGame.Library.Models;
 
@@ -16,11 +17,13 @@ namespace TriviaGame.Api.Controllers
 
         public IUserRepository UserRepo { get; set; }
         public IQuizRepository QuizRepo { get; set; }
+        public IGameModeRepository GameModeRepo { get; set; }
 
-        public QuizController(IUserRepository userRepo, IQuizRepository quizRepo)
+        public QuizController(IUserRepository userRepo, IQuizRepository quizRepo, IGameModeRepository gameModeRepo)
         {
             UserRepo = userRepo;
             QuizRepo = quizRepo;
+            GameModeRepo = gameModeRepo;
         }
 
         // GET: api/Quiz
@@ -74,6 +77,18 @@ namespace TriviaGame.Api.Controllers
         {
             var quizzes = QuizRepo.GetQuizzesByCategoryId(id);
             return quizzes;
+        }
+
+        //GET: 
+        [HttpGet]
+        [Route("NewQuiz/")]
+        public async Task<Quiz> CreateQuiz()
+        {
+            var quiz = new Quiz();
+            //quiz.Categories = await CategoryRepo.GetCategories();
+            quiz.GameModes = GameModeRepo.GetGameModes().ToList();
+
+            return Ok(quiz);
         }
 
         // POST: api/Quiz
